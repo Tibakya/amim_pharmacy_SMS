@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\ProfitReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,9 +33,9 @@ use App\Http\Controllers\Admin\SupplierController;
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('sales/profit-report', [SaleController::class, 'profitReport'])->name('sales.profit-report');
-Route::post('sales/profit-report', [SaleController::class, 'generateProfitReport'])->name('sales.generateProfitReport');
-
+    Route::get('/profit-report', [ProfitReportController::class, 'index'])->name('reports.profit');
+    
+Route::get('/generate-profit-report', [ProfitReportController::class, 'generateReport'])->name('admin.profit-report.generateReport');
 
 
     Route::post('/sales/multiple', [SaleController::class, 'storeMultipleSales'])->name('sales.storeMultiple');

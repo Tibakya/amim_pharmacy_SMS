@@ -157,17 +157,6 @@ public function reports()
 }
 
 
-    // public function generateReport(Request $request){
-    //     $this->validate($request,[
-    //         'from_date' => 'required',
-    //         'to_date' => 'required'
-    //     ]);
-    //     $title = 'purchases reports';
-    //     $purchases = Purchase::whereBetween(DB::raw('DATE(created_at)'), array($request->from_date, $request->to_date))->get();
-    //     return view('admin.purchases.reports',compact(
-    //         'purchases','title'
-    //     ));
-    // }
 
     public function generateReport(Request $request)
 {

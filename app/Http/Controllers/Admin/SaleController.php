@@ -20,54 +20,6 @@ class SaleController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-//     public function index(Request $request)
-// {
-//     $title = 'sales';
-//     if ($request->ajax()) {
-//         $sales = Sale::latest()->with('product.purchase'); // Eager load purchase
-
-//         return DataTables::of($sales)
-//             ->addIndexColumn()
-//             ->addColumn('product', function($sale){
-//                 $image = '';
-//                 if (!empty($sale->product)) {
-//                     $image = null;
-//                     if (!empty($sale->product->purchase->image)) {
-//                         $image = '<span class="avatar avatar-sm mr-2">
-//                             <img class="avatar-img" src="'.asset("storage/purchases/".$sale->product->purchase->image).'" alt="image">
-//                             </span>';
-//                     }
-//                     return $sale->product->purchase->product. ' ' . $image;
-//                 }                 
-//             })
-//             ->addColumn('batch_no', function($sale){
-//                 return $sale->product->purchase->batch_number ?? 'N/A';  // Display batch number
-//             })
-//             ->addColumn('total_price',function($sale){
-//                 return settings('app_currency','$').' '. $sale->total_price;
-//             })
-//             ->addColumn('date', function($row){
-//                 return date_format(date_create($row->created_at),'d M, Y');
-//             })
-//             ->addColumn('action', function ($row) {
-//                 $editbtn = '<a href="'.route("sales.edit", $row->id).'" class="editbtn"><button class="btn btn-primary"><i class="fas fa-edit"></i></button></a>';
-//                 $deletebtn = '<a data-id="'.$row->id.'" data-route="'.route('sales.destroy', $row->id).'" href="javascript:void(0)" id="deletebtn"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a>';
-//                 if (!auth()->user()->hasPermissionTo('edit-sale')) {
-//                     $editbtn = '';
-//                 }
-//                 if (!auth()->user()->hasPermissionTo('destroy-sale')) {
-//                     $deletebtn = '';
-//                 }
-//                 return $editbtn.' '.$deletebtn;
-//             })
-//             ->rawColumns(['product', 'batch_no', 'action'])
-//             ->make(true);
-//     }
-
-//     $products = Product::get();
-//     return view('admin.sales.index', compact('title', 'products'));
-// }
-
 public function index(Request $request)
 {
     $title = 'sales';

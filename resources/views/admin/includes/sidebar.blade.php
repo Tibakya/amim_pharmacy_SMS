@@ -68,8 +68,9 @@
 					<ul style="display: none;">
 						<li><a class="{{ route_is('sales.report') ? 'active' : '' }}" href="{{route('sales.report')}}">Sale Report</a></li>
 						<li><a class="{{ route_is('purchases.report') ? 'active' : '' }}" href="{{route('purchases.report')}}">Purchase Report</a></li>
-						<li><a class="{{ route_is('purchases.report') ? 'active' : '' }}" href="#">Profit Report</a></li>
-					</ul>
+						 <!-- Add the Profit Report link here -->
+						 <li><a class="{{ route_is('reports.profit') ? 'active' : '' }}" href="{{ route('reports.profit') }}">Profit Report</a></li>
+        </ul>
 				</li>
 				@endcan
 
