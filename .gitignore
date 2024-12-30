@@ -1,0 +1,32 @@
+# Node.js dependencies
+/node_modules/
+
+# Laravel public files
+/public/hot
+/public/storage
+
+# Laravel storage
+/storage/*.key
+
+# Composer vendor directory
+/vendor/
+
+# Environment variables
+.env
+.env.backup
+
+# PHPUnit result cache
+.phpunit.result.cache
+
+# Docker and Homestead files
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+
+# npm and yarn logs
+npm-debug.log
+yarn-error.log
+
+# IDE and editor configurations
+/.idea
+/.vscode

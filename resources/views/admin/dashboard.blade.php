@@ -1,0 +1,218 @@
+@extends('admin.layouts.app')
+
+<x-assets.datatables />
+
+@push('page-css')
+    <link rel="stylesheet" href="{{asset('assets/plugins/chart.js/Chart.min.css')}}">
+    <style>
+        /* Enhanced Card Background and Hover Effects */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 10px; /* Rounded corners */
+            background: #ffffff; /* Default background */
+        }
+
+        .card:hover {
+            /* transform: scale(1.05); */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Card Background Color Variants for Light Mode */
+        .card-primary {
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            color: #ffffff;
+        }
+
+        .card-success {
+            background: linear-gradient(255deg,rgb(1, 250, 59),rgb(0, 0, 0));
+            color: #ffffff;
+        }
+
+        .card-danger {
+            background: linear-gradient(135deg,rgb(65, 42, 44), #f88379);
+            color: #ffffff;
+        }
+
+        .card-warning {
+            background: linear-gradient(135deg,rgb(59, 29, 159),rgb(37, 117, 151));
+            color: #ffffff;
+        }
+
+        /* Tooltip Styling */
+        .card .dash-count {
+            cursor: pointer;
+        }
+
+        /* Typography */
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h3.page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .col-xl-3 {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+@endpush
+
+@push('page-header')
+<div class="col-sm-12">
+    <h3 class="page-title">Welcome {{auth()->user()->name}}!</h3>
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item active">Dashboard</li>
+    </ul>
+</div>
+@endpush
+
+@section('content')
+<div class="row">
+    <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card card-primary">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <span class="dash-widget-icon text-primary border-primary">
+                        <i class="fe fe-money"></i>
+                    </span>
+                    <div class="dash-count" data-toggle="tooltip" title="Total Sales for the Day">
+                        <h3>{{AppSettings::get('app_currency', '$')}} {{$today_sales}}</h3>
+                    </div>
+                </div>
+                <div class="dash-widget-info">
+                    <h6 class="">Today Sales Cash</h6>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-primary w-50"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card card-success">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <span class="dash-widget-icon text-success">
+                        <i class="fe fe-credit-card"></i>
+                    </span>
+                    <div class="dash-count" data-toggle="tooltip" title="Total Categories Available">
+                        <h3>{{$total_categories}}</h3>
+                    </div>
+                </div>
+                <div class="dash-widget-info">
+                    <h6 class="">Product Categories</h6>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-success w-50"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card card-danger">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <span class="dash-widget-icon text-danger border-danger">
+                        <i class="fe fe-folder"></i>
+                    </span>
+                    <div class="dash-count" data-toggle="tooltip" title="Expired Products">
+                        <h3>{{$total_expired_products}}</h3>
+                    </div>
+                </div>
+                <div class="dash-widget-info">
+                    <h6 class="">Expired Products</h6>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-danger w-50"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card card-warning">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <span class="dash-widget-icon text-warning border-warning">
+                        <i class="fe fe-users"></i>
+                    </span>
+                    <div class="dash-count" data-toggle="tooltip" title="Total Users in the System">
+                        <h3>{{\DB::table('users')->count()}}</h3>
+                    </div>
+                </div>
+                <div class="dash-widget-info">
+                    <h6 class="">System Users</h6>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-warning w-50"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-lg-6">
+        <div class="card card-table p-3">
+            <div class="card-header">
+                <h4 class="card-title ">Today Sales</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="sales-table" class="datatable table table-hover table-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>Medicine</th>
+                                <th>Quantity</th>
+                                <th>Total Price</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 col-lg-6">
+        <div class="card card-chart">
+            <div class="card-header">
+                <h4 class="card-title text-center">Resources</h4>
+            </div>
+            <div class="card-body">
+                <div style="">
+                    {!! $pieChart->render() !!}
+                </div>
+            </div>
+        </div>
+    </div>  
+</div>
+
+@endsection
+
+@push('page-js')
+<script>
+    $(document).ready(function() {
+        var table = $('#sales-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{route('dashboard.todays-sales')}}", // Update the route to the new one
+            columns: [
+                {data: 'product', name: 'product'},
+                {data: 'quantity', name: 'quantity'},
+                {data: 'total_price', name: 'total_price'},
+                {data: 'date', name: 'date'},
+            ]
+        });
+
+        // Enable tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script> 
+<script src="{{asset('assets/plugins/chart.js/Chart.bundle.min.js')}}"></script>
+@endpush
