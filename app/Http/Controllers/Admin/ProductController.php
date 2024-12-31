@@ -131,6 +131,25 @@ public function fetchProductDetails(Request $request)
     return response()->json(['error' => 'Product not found'], 404);
 }
 
+/**
+ * Fetch batch numbers by product ID
+ *
+ * @param \Illuminate\Http\Request $request
+ * @return \Illuminate\Http\JsonResponse
+ */
+public function fetchBatchNumbers(Request $request)
+{
+    $productId = $request->product_id;
+    $purchases = Purchase::where('id', $productId)->get();
+
+    $batchNumbers = [];
+    foreach ($purchases as $purchase) {
+        $batchNumbers[$purchase->batch_number] = $purchase->batch_number;
+    }
+
+    return response()->json($batchNumbers);
+}
+
 
 
 

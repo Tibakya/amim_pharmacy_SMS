@@ -35,14 +35,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profit-report', [ProfitReportController::class, 'index'])->name('reports.profit');
     
-Route::get('/generate-profit-report', [ProfitReportController::class, 'generateReport'])->name('admin.profit-report.generateReport');
+    Route::get('/generate-profit-report', [ProfitReportController::class, 'generateReport'])->name('admin.profit-report.generateReport');
 
 
     Route::post('/sales/multiple', [SaleController::class, 'storeMultipleSales'])->name('sales.storeMultiple');
 
-
-    // Route::get('products/{id}', [ProductController::class, 'getProductDetails'])->name('products.details');
     Route::post('/products/details', [ProductController::class, 'fetchProductDetails'])->name('products.details');
+    Route::get('/products/fetch-batch-numbers', [ProductController::class, 'fetchBatchNumbers'])->name('products.fetchBatchNumbers');
 
 
     // Dashboard Routes

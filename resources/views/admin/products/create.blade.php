@@ -29,6 +29,7 @@
                             <div class="form-group">
                                 <label>Product <span class="text-danger">*</span></label>
                                 <select class="select2 form-select form-control" name="product">
+                                    <option value="" selected disabled>Select a product</option>
                                     @foreach ($purchases as $purchase)
                                     <option value="{{$purchase->id}}">{{$purchase->product}}</option>
                                     @endforeach
@@ -39,6 +40,7 @@
                             <div class="form-group">
                                 <label>Batch Number <span class="text-danger">*</span></label>
                                 <select class="select2 form-select form-control" name="batch_no">
+                                    <option value="" selected disabled>Select a batch number</option>
                                     @foreach ($purchases as $purchase)
                                     <option value="{{$purchase->batch_number}}">{{$purchase->batch_number}}</option>
                                     @endforeach
@@ -90,5 +92,26 @@
 @endsection
 
 @push('page-js')
-
+<script>
+    $(document).ready(function() {
+        $('select[name="product"]').on('change', function() {
+            var productId = $(this).val();
+            if (productId) {
+                $.ajax({
+                    url: '{{ route("products.fetchBatchNumbers") }}',
+                    type: 'GET',
+                    data: { product_id: productId },
+                    success: function(data) {
+                        $('select[name="batch_no"]').empty().append('<option value="" selected disabled>Select a batch number</option>');
+                        $.each(data, function(key, value) {
+                            $('select[name="batch_no"]').append('<option value="' + key + '">' + value + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('select[name="batch_no"]').empty().append('<option value="" selected disabled>Select a batch number</option>');
+            }
+        });
+    });
+</script>
 @endpush

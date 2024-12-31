@@ -4,62 +4,7 @@
 
 @push('page-css')
     <link rel="stylesheet" href="{{asset('assets/plugins/chart.js/Chart.min.css')}}">
-    <style>
-        /* Enhanced Card Background and Hover Effects */
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-radius: 10px; /* Rounded corners */
-            background: #ffffff; /* Default background */
-        }
 
-        .card:hover {
-            /* transform: scale(1.05); */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Card Background Color Variants for Light Mode */
-        .card-primary {
-            background: linear-gradient(135deg, #007bff, #00c6ff);
-            color: #ffffff;
-        }
-
-        .card-success {
-            background: linear-gradient(255deg,rgb(1, 250, 59),rgb(0, 0, 0));
-            color: #ffffff;
-        }
-
-        .card-danger {
-            background: linear-gradient(135deg,rgb(65, 42, 44), #f88379);
-            color: #ffffff;
-        }
-
-        .card-warning {
-            background: linear-gradient(135deg,rgb(59, 29, 159),rgb(37, 117, 151));
-            color: #ffffff;
-        }
-
-        /* Tooltip Styling */
-        .card .dash-count {
-            cursor: pointer;
-        }
-
-        /* Typography */
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-
-        h3.page-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .col-xl-3 {
-                margin-bottom: 15px;
-            }
-        }
-    </style>
 @endpush
 
 @push('page-header')

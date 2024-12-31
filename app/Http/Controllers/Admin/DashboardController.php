@@ -6,8 +6,9 @@ use App\Models\Sale;
 use App\Models\Category;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables; // use App\Http\Controllers\Controller;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 
@@ -18,7 +19,9 @@ class DashboardController extends Controller
         $total_purchases = Purchase::where('expiry_date','!=',Carbon::now())->count();
         $total_categories = Category::count();
         $total_suppliers = Supplier::count();
-        $total_sales = Sale::count();
+        $total_sales = Sale::sum('total_price');
+        $total_users = User::count();
+        $pending_orders = Purchase::where('quantity', '<=', 1)->count();
         
         $pieChart = app()->chartjs
                 ->name('pieChart')
@@ -34,12 +37,17 @@ class DashboardController extends Controller
                 ])
                 ->options([]);
         
-        $total_expired_products = Purchase::whereDate('expiry_date', '=', Carbon::now())->count();
+        $total_expired_products = Purchase::whereDate('expiry_date', '<', Carbon::now())->count();
         $latest_sales = Sale::whereDate('created_at','=',Carbon::now())->get();
         $today_sales = Sale::whereDate('created_at','=',Carbon::now())->sum('total_price');
+        $sales_data = Sale::with('product.purchase')->get();
+        $user_registrations = User::all();
+
         return view('admin.dashboard',compact(
             'title','pieChart','total_expired_products',
-            'latest_sales','today_sales','total_categories'
+            'latest_sales','today_sales','total_categories',
+            'total_sales', 'total_users', 'pending_orders',
+            'sales_data', 'user_registrations'
         ));
     }
 
