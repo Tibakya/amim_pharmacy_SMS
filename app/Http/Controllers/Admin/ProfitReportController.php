@@ -33,19 +33,26 @@ class ProfitReportController extends Controller
             'from_date' => 'required|date',
             'to_date' => 'required|date|after_or_equal:from_date',
         ]);
-
+    
         $fromDate = $request->from_date;
         $toDate = $request->to_date;
-
+    
         $sales = Sale::whereBetween('created_at', [$fromDate, $toDate])
             ->with('product.purchase')
             ->get();
-
+    
         $totalProfit = $sales->sum(function ($sale) {
+            if (!$sale->product || !$sale->product->purchase) {
+                return 0;
+            }
+    
             $costPrice = $sale->product->purchase->cost_price ?? 0;
-            return $sale->total_price - ($costPrice * $sale->quantity);
+            $quantity = $sale->quantity ?? 1;
+    
+            return $sale->total_price - ($costPrice * $quantity);
         });
-
+    
         return view('admin.reports.profit', compact('sales', 'totalProfit', 'fromDate', 'toDate'));
     }
+    
 }
